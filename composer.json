@@ -25,7 +25,8 @@
 				"application/libraries/PluginManager/Storage"
 			],
 			"ls\\menu\\": "application/libraries/MenuObjects/",
-			"ls\\helpers\\": "application/helpers"
+			"ls\\helpers\\": "application/helpers",
+			"LimeSurvey\\Models\\Survey\\": "application/models/survey"
 		}
 	}
 }
