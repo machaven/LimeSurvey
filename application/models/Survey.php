@@ -16,7 +16,7 @@ if (!defined('BASEPATH'))
 */
 
 use \ls\pluginmanager\PluginEvent;
-use LimeSurvey\Models\Survey\SurveyCaptchaTrait;
+use LimeSurvey\Models\SurveyTraits\SurveyCaptchaTrait;
 
 /**
  * Class Survey

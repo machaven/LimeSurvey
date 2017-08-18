@@ -26,7 +26,7 @@
 			],
 			"ls\\menu\\": "application/libraries/MenuObjects/",
 			"ls\\helpers\\": "application/helpers",
-			"LimeSurvey\\Models\\Survey\\": "application/models/survey"
+			"LimeSurvey\\Models\\SurveyTraits\\": "application/models/SurveyTraits"
 		}
 	}
 }

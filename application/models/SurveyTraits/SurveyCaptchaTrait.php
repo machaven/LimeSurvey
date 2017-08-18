@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Survey;
+namespace LimeSurvey\Models\SurveyTraits;
 
 trait SurveyCaptchaTrait
 {

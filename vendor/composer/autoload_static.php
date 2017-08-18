@@ -15,7 +15,7 @@ class ComposerStaticInite022c7189514e0467ecad3e05657c233
         ),
         'L' => 
         array (
-            'LimeSurvey\\Models\\Survey\\' => 25,
+            'LimeSurvey\\Models\\SurveyTraits\\' => 31,
         ),
     );
 
@@ -33,9 +33,9 @@ class ComposerStaticInite022c7189514e0467ecad3e05657c233
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
         ),
-        'LimeSurvey\\Models\\Survey\\' => 
+        'LimeSurvey\\Models\\SurveyTraits\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/application/models/survey',
+            0 => __DIR__ . '/../..' . '/application/models/SurveyTraits',
         ),
     );
 
