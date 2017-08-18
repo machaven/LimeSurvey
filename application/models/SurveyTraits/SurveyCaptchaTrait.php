@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Models\SurveyTraits;
 
+use \Survey as SurveyModel;
+
 trait SurveyCaptchaTrait
 {
     /**
@@ -17,22 +19,22 @@ trait SurveyCaptchaTrait
     private static function getSurveyCaptchaSettingChar($surveyAccess, $registration, $saveAndLoad)
     {
         if ($surveyAccess === '1' && $registration === '1' && $saveAndLoad === '1') {
-            return self::CAPTCHA_ALL_THREE_ENABLED;
+            return SurveyModel::CAPTCHA_ALL_THREE_ENABLED;
         } elseif ($surveyAccess === '1' && $registration === '1') {
-            return self::CAPTCHA_ALL_BUT_SAVE_AND_LOAD;
+            return SurveyModel::CAPTCHA_ALL_BUT_SAVE_AND_LOAD;
         } elseif ($surveyAccess === '1' && $saveAndLoad === '1') {
-            return self::CAPTCHA_ALL_BUT_REGISTRATION;
+            return SurveyModel::CAPTCHA_ALL_BUT_REGISTRATION;
         } elseif ($registration === '1' && $saveAndLoad === '1') {
-            return self::CAPTCHA_ALL_BUT_SURVEY_ACCESS;
+            return SurveyModel::CAPTCHA_ALL_BUT_SURVEY_ACCESS;
         } elseif ($surveyAccess === '1') {
-            return self::CAPTCHA_ONLY_SURVEY_ACCESS;
+            return SurveyModel::CAPTCHA_ONLY_SURVEY_ACCESS;
         } elseif ($registration === '1') {
-            return self::CAPTCHA_ONLY_REGISTRATION;
+            return SurveyModel::CAPTCHA_ONLY_REGISTRATION;
         } elseif ($saveAndLoad === '1') {
-            return self::CAPTCHA_ONLY_SAVE_AND_LOAD;
+            return SurveyModel::CAPTCHA_ONLY_SAVE_AND_LOAD;
         }
 
-        return self::CAPTCHA_NONE;
+        return SurveyModel::CAPTCHA_NONE;
     }
 
     /**
@@ -60,7 +62,7 @@ trait SurveyCaptchaTrait
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(\Survey $oSurvey)
+    public static function saveTranscribeCaptchaOptions(SurveyModel $oSurvey)
     {
         $surveyAccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
