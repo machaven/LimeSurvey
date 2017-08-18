@@ -140,6 +140,18 @@ use \ls\pluginmanager\PluginEvent;
 class Survey extends LSActiveRecord
 {
     /**
+     * Captcha Constants
+     */
+    const CAPTCHA_ALL_THREE_ENABLED = 'A';
+    const CAPTCHA_ALL_BUT_SAVE_AND_LOAD = 'B';
+    const CAPTCHA_ALL_BUT_REGISTRATION = 'C';
+    const CAPTCHA_ALL_BUT_SURVEY_ACCESS = 'D';
+    const CAPTCHA_ONLY_SURVEY_ACCESS = 'X';
+    const CAPTCHA_ONLY_REGISTRATION = 'R';
+    const CAPTCHA_ONLY_SAVE_AND_LOAD = 'S';
+    const CAPTCHA_NONE = 'N';
+
+    /**
      * This is a static cache, it lasts only during the active request. If you ever need
      * to clear it, like on activation of a survey when in the same request a row is read,
      * saved and read again you can use resetCache() method.
@@ -1468,85 +1480,63 @@ class Survey extends LSActiveRecord
      * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST
      *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
+     * @return string One character that corresponds to captcha usage
+     */
+    private static function getSurveyCaptchaSettingChar($surveyaccess, $registration, $saveandload)
+    {
+        if ($surveyaccess && $registration && $saveandload) {
+            return self::CAPTCHA_ALL_THREE_ENABLED;
+        } elseif ($surveyaccess && $registration) {
+            return self::CAPTCHA_ALL_BUT_SAVE_AND_LOAD;
+        } elseif ($surveyaccess && $saveandload) {
+            return self::CAPTCHA_ALL_BUT_REGISTRATION;
+        } elseif ($registration && $saveandload) {
+            return self::CAPTCHA_ALL_BUT_SURVEY_ACCESS;
+        } elseif ($surveyaccess) {
+            return self::CAPTCHA_ONLY_SURVEY_ACCESS;
+        } elseif ($registration) {
+            return self::CAPTCHA_ONLY_REGISTRATION;
+        } elseif ($saveandload) {
+            return self::CAPTCHA_ONLY_SAVE_AND_LOAD;
+        }
+
+        return self::CAPTCHA_NONE;
+    }
+
+    /**
+     * Transcribe from 3 checkboxes to 1 char for captcha usages
+     * Uses variables from $_POST
      *
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function transcribeCaptchaOptions() {
+    public static function transcribeCaptchaOptions()
+    {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
         $registration = App()->request->getPost('usecaptcha_registration');
         $saveandload = App()->request->getPost('usecaptcha_saveandload');
 
-        if ($surveyaccess && $registration && $saveandload) {
-            return 'A';
-        } elseif ($surveyaccess && $registration) {
-            return 'B';
-        } elseif ($surveyaccess && $saveandload) {
-            return 'C';
-        } elseif ($registration && $saveandload) {
-            return 'D';
-        } elseif ($surveyaccess) {
-            return 'X';
-        } elseif ($registration) {
-            return 'R';
-        } elseif ($saveandload) {
-            return 'S';
-        }
-
-        return 'N';
+        return self::getSurveyCaptchaSettingChar($surveyaccess, $registration, $saveandload);
     }
 
     /**
      * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST and transferred Surveyobject
      *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
-     *
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
-
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey)
+    {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
 
-        if($surveyaccess === null && $registration === null && $saveandload === null){
+        if ($surveyaccess === null && $registration === null && $saveandload === null) {
             return $oSurvey->usecaptcha;
         }
 
-        if ($surveyaccess && $registration && $saveandload) {
-            return 'A';
-        } elseif ($surveyaccess && $registration) {
-            return 'B';
-        } elseif ($surveyaccess && $saveandload) {
-            return 'C';
-        } elseif ($registration && $saveandload) {
-            return 'D';
-        } elseif ($surveyaccess) {
-            return 'X';
-        } elseif ($registration) {
-            return 'R';
-        } elseif ($saveandload) {
-            return 'S';
-        }
-
-        return 'N';
+        return self::getSurveyCaptchaSettingChar($surveyaccess, $registration, $saveandload);
     }
 
 
