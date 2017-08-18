@@ -16,6 +16,7 @@ if (!defined('BASEPATH'))
 */
 
 use \ls\pluginmanager\PluginEvent;
+use LimeSurvey\Models\SurveyTraits\SurveyCaptchaTrait;
 
 /**
  * Class Survey
@@ -139,6 +140,20 @@ use \ls\pluginmanager\PluginEvent;
  */
 class Survey extends LSActiveRecord
 {
+    use SurveyCaptchaTrait;
+
+    /**
+     * Captcha Constants
+     */
+    const CAPTCHA_ALL_THREE_ENABLED = 'A';
+    const CAPTCHA_ALL_BUT_SAVE_AND_LOAD = 'B';
+    const CAPTCHA_ALL_BUT_REGISTRATION = 'C';
+    const CAPTCHA_ALL_BUT_SURVEY_ACCESS = 'D';
+    const CAPTCHA_ONLY_SURVEY_ACCESS = 'X';
+    const CAPTCHA_ONLY_REGISTRATION = 'R';
+    const CAPTCHA_ONLY_SAVE_AND_LOAD = 'S';
+    const CAPTCHA_NONE = 'N';
+
     /**
      * This is a static cache, it lasts only during the active request. If you ever need
      * to clear it, like on activation of a survey when in the same request a row is read,
@@ -1463,92 +1478,6 @@ class Survey extends LSActiveRecord
 
         return $dataProvider;
     }
-
-    /**
-     * Transcribe from 3 checkboxes to 1 char for captcha usages
-     * Uses variables from $_POST
-     *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
-     *
-     * @return string One character that corresponds to captcha usage
-     * @todo Should really be saved as three fields in the database!
-     */
-    public static function transcribeCaptchaOptions() {
-        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
-        $registration = App()->request->getPost('usecaptcha_registration');
-        $saveandload = App()->request->getPost('usecaptcha_saveandload');
-
-        if ($surveyaccess && $registration && $saveandload) {
-            return 'A';
-        } elseif ($surveyaccess && $registration) {
-            return 'B';
-        } elseif ($surveyaccess && $saveandload) {
-            return 'C';
-        } elseif ($registration && $saveandload) {
-            return 'D';
-        } elseif ($surveyaccess) {
-            return 'X';
-        } elseif ($registration) {
-            return 'R';
-        } elseif ($saveandload) {
-            return 'S';
-        }
-
-        return 'N';
-    }
-
-    /**
-     * Transcribe from 3 checkboxes to 1 char for captcha usages
-     * Uses variables from $_POST and transferred Surveyobject
-     *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
-     *
-     * @return string One character that corresponds to captcha usage
-     * @todo Should really be saved as three fields in the database!
-     */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
-
-        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
-        $registration = App()->request->getPost('usecaptcha_registration', null);
-        $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
-
-        if($surveyaccess === null && $registration === null && $saveandload === null){
-            return $oSurvey->usecaptcha;
-        }
-
-        if ($surveyaccess && $registration && $saveandload) {
-            return 'A';
-        } elseif ($surveyaccess && $registration) {
-            return 'B';
-        } elseif ($surveyaccess && $saveandload) {
-            return 'C';
-        } elseif ($registration && $saveandload) {
-            return 'D';
-        } elseif ($surveyaccess) {
-            return 'X';
-        } elseif ($registration) {
-            return 'R';
-        } elseif ($saveandload) {
-            return 'S';
-        }
-
-        return 'N';
-    }
-
 
     /**
      * Method to make an approximation on how long a survey will last

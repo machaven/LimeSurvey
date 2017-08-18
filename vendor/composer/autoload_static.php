@@ -13,6 +13,10 @@ class ComposerStaticInite022c7189514e0467ecad3e05657c233
             'ls\\menu\\' => 8,
             'ls\\helpers\\' => 11,
         ),
+        'L' => 
+        array (
+            'LimeSurvey\\Models\\SurveyTraits\\' => 31,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -28,6 +32,10 @@ class ComposerStaticInite022c7189514e0467ecad3e05657c233
         'ls\\helpers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
+        ),
+        'LimeSurvey\\Models\\SurveyTraits\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/models/SurveyTraits',
         ),
     );
 
