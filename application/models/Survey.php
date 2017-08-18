@@ -1480,6 +1480,10 @@ class Survey extends LSActiveRecord
      * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST
      *
+     * @param string $surveyaccess
+     * @param string $registration
+     * @param string $saveandload
+     * 
      * @return string One character that corresponds to captcha usage
      */
     private static function getSurveyCaptchaSettingChar($surveyaccess, $registration, $saveandload)
@@ -1523,6 +1527,8 @@ class Survey extends LSActiveRecord
      * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST and transferred Surveyobject
      *
+     * @param Survey $oSurvey
+     *
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
@@ -1538,7 +1544,6 @@ class Survey extends LSActiveRecord
 
         return self::getSurveyCaptchaSettingChar($surveyaccess, $registration, $saveandload);
     }
-
 
     /**
      * Method to make an approximation on how long a survey will last
